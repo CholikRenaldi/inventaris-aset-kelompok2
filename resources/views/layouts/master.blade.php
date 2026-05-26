@@ -1,117 +1,82 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Inventaris Aset</title>
+
+<title>Inventaris Aset</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 
 body{
-    font-family: 'Segoe UI', Arial, sans-serif;
-    margin:0;
+    font-family:'Segoe UI', Arial, sans-serif;
     background:#f5f6fa;
 }
 
-
-.navbar{
-    background:#2c3e50;
-    color:white;
-    padding:15px 40px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+/* Navbar */
+.custom-navbar{
+    background:#1e293b;
+    padding:14px 0;
 }
 
-.nav-left a{
-    color:white;
-    margin-right:20px;
+/* Brand */
+.navbar-brand{
+    color:white !important;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* Menu */
+.nav-link-custom{
+    color:#cbd5e1;
     text-decoration:none;
+    margin-right:25px;
     font-weight:500;
+    padding-bottom:18px;
+    transition:0.2s;
+    position:relative;
 }
 
-.nav-left a:hover{
-    opacity:0.8;
-}
-
-.nav-right{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.logout-btn{
-    background:#e74c3c;
-    border:none;
+/* Hover */
+.nav-link-custom:hover{
     color:white;
-    padding:6px 10px;
-    cursor:pointer;
-    border-radius:4px;
 }
 
-.logout-btn:hover{
-    background:#c0392b;
+/* Menu aktif */
+.nav-active{
+    color:white !important;
 }
 
-
-.container{
-    width:85%;
-    margin:auto;
-    margin-top:30px;
-}
-
-table{
+.nav-active::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:0;
     width:100%;
-    border-collapse:collapse;
-    background:white;
-    box-shadow:0 2px 6px rgba(0,0,0,0.1);
-    margin-bottom: 31px;
+    height:3px;
+    background:#4f46e5;
+    border-radius:10px;
 }
 
-th,td{
-    padding:10px;
-    border-bottom:1px solid #eee;
-    text-align:center;
-}
-
-th{
-    background:#34495e;
+/* User */
+.user-text{
     color:white;
+    margin-right:10px;
 }
 
-
-
-.btn{
-    padding:6px 12px;
-    border:none;
-    text-decoration:none;
-    color:white;
-    border-radius:4px;
-    cursor:pointer;
+/* Card */
+.card{
+    border-radius:12px;
 }
 
-.btn-add{ background:#27ae60; }
-.btn-edit{ background:#2980b9; }
-.btn-delete{ background:#e74c3c; }
-.btn-cancel{ background:#7f8c8d; }
-
-.btn:hover{
-    opacity:0.9;
+/* Tabel */
+.table img{
+    object-fit:cover;
 }
 
-form input, form select{
-    width:100%;
-    padding:8px;
-    margin-bottom:12px;
-    border:1px solid #ccc;
-    border-radius:4px;
-}
-
-.success{
-    color:green;
-    margin-bottom:10px;
-}
-
-.error{
-    color:red;
+.pagination{
+    justify-content:center;
 }
 
 </style>
@@ -120,27 +85,64 @@ form input, form select{
 
 <body>
 
-<div class="navbar">
+<nav class="navbar navbar-expand-lg custom-navbar shadow-sm">
 
-    <div class="nav-left">
-        <a href="{{ route('dashboard') }}">Dashboard</a>
-        <a href="{{ route('asets.index') }}">Data Aset</a>
-    </div>
+<div class="container">
 
-    <div class="nav-right">
-        <span>{{ Auth::user()->name }}</span>
+<!-- Logo -->
+<a class="navbar-brand" href="#">
+Inventaris Aset
+</a>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="logout-btn">Logout</button>
-        </form>
-    </div>
+<!-- Menu -->
+<div class="d-flex align-items-center">
+
+<a href="{{ route('dashboard') }}"
+class="nav-link-custom {{ request()->routeIs('dashboard') ? 'nav-active' : '' }}">
+
+Dashboard
+
+</a>
+
+<a href="{{ route('asets.index') }}"
+class="nav-link-custom {{ request()->routeIs('asets.*') ? 'nav-active' : '' }}">
+
+Data Aset
+
+</a>
 
 </div>
 
-<div class="container">
+<!-- User -->
+<div class="d-flex align-items-center">
+
+<span class="user-text">
+{{ Auth::user()->name }}
+</span>
+
+<form method="POST"
+action="{{ route('logout') }}">
+
+@csrf
+
+<button class="btn btn-outline-light btn-sm">
+Logout
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</nav>
+
+<div class="container mt-4">
+
 @yield('content')
+
 </div>
 
 </body>
+
 </html>

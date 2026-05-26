@@ -2,60 +2,119 @@
 
 @section('content')
 
-<h2>Tambah Aset</h2>
+<div class="card shadow">
+    <div class="card-header bg-success text-white">
+        <h4>Tambah Aset</h4>
+    </div>
 
-<form action="{{ route('asets.store') }}" method="POST" enctype="multipart/form-data">
+    <div class="card-body">
+        <form action="{{ route('asets.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-@csrf
+            <div class="mb-3">
+                <label class="form-label">Kode Barang</label>
 
-<label>Kode Barang</label>
-<input type="text" name="kode_barang">
+                <input type="text"
+                       name="kode_barang"
+                       class="form-control"
+                       value="{{ old('kode_barang') }}">
 
-@error('kode_barang')
-<p style="color:red">{{ $message }}</p>
-@enderror
+                @error('kode_barang')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
+            <div class="mb-3">
+                <label class="form-label">Nama Barang</label>
 
-<label>Nama Barang</label>
-<input type="text" name="nama_barang" value="{{ old('nama_barang') }}">
+                <input type="text"
+                       name="nama_barang"
+                       class="form-control"
+                       value="{{ old('nama_barang') }}">
 
+                @error('nama_barang')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
+            <div class="mb-3">
+                <label class="form-label">Kategori</label>
 
-<label>Kategori</label>
-<select name="kategori_id" required>
+                <select name="kategori_id" class="form-select">
+                    <option value="">-- Pilih Kategori --</option>
 
-<option value="">-- Pilih Kategori --</option>
+                    @foreach($kategoris as $kat)
+                        <option value="{{ $kat->id }}">
+                            {{ $kat->nama_kategori }}
+                        </option>
+                    @endforeach
+                </select>
 
-@foreach($kategoris as $kat)
-<option value="{{ $kat->id }}">
-    {{ $kat->nama_kategori }}
-</option>
-@endforeach
+                @error('kategori_id')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
-</select>
+            <div class="mb-3">
+                <label class="form-label">Jumlah</label>
 
+                <input type="number"
+                       name="jumlah"
+                       class="form-control"
+                       value="{{ old('jumlah') }}">
 
-<label>Jumlah</label>
-<input type="number" name="jumlah" value="{{ old('jumlah') }}">
+                @error('jumlah')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
+            <div class="mb-3">
+                <label class="form-label">Kondisi</label>
 
-<label>Kondisi</label>
-<select name="kondisi">
-<option value="Baik">Baik</option>
-<option value="Rusak Ringan">Rusak Ringan</option>
-<option value="Rusak Berat">Rusak Berat</option>
-</select>
+                <select name="kondisi" class="form-select">
+                    <option value="">-- Pilih Kondisi --</option>
 
+                    <option value="Baik"
+                        {{ old('kondisi') == 'Baik' ? 'selected' : '' }}>
+                        Baik
+                    </option>
 
-<label>Foto</label>
-<input type="file" name="foto">
+                    <option value="Rusak Ringan"
+                        {{ old('kondisi') == 'Rusak Ringan' ? 'selected' : '' }}>
+                        Rusak Ringan
+                    </option>
 
-<button class="btn btn-add">Simpan</button>
+                    <option value="Rusak Berat"
+                        {{ old('kondisi') == 'Rusak Berat' ? 'selected' : '' }}>
+                        Rusak Berat
+                    </option>
+                </select>
 
-<a href="{{ route('asets.index') }}" class="btn btn-cancel">
-Batal
-</a>
+                @error('kondisi')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
-</form>
+            <div class="mb-3">
+                <label class="form-label">Foto</label>
+
+                <input type="file"
+                       name="foto"
+                       class="form-control">
+
+                @error('foto')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button class="btn btn-success">Simpan</button>
+
+            <a href="{{ route('asets.index') }}"
+               class="btn btn-secondary">
+                Batal
+            </a>
+        </form>
+    </div>
+</div>
 
 @endsection

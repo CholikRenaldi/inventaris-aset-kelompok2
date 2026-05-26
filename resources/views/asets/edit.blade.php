@@ -2,82 +2,138 @@
 
 @section('content')
 
-<h2>Edit Aset</h2>
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4>Edit Aset</h4>
+    </div>
 
-<form action="{{ route('asets.update',$aset->id) }}" method="POST" enctype="multipart/form-data">
+    <div class="card-body">
+        <form action="{{ route('asets.update', $aset->id) }}"
+              method="POST"
+              enctype="multipart/form-data">
 
-@csrf
-@method('PUT')
+            @csrf
+            @method('PUT')
 
-<label>Kode Barang</label>
-<input type="text" name="kode_barang" value="{{ old('kode_barang', $aset->kode_barang) }}">
+            <div class="mb-3">
+                <label class="form-label">Kode Barang</label>
 
-@error('kode_barang')
-<p style="color:red">{{ $message }}</p>
-@enderror
+                <input type="text"
+                       name="kode_barang"
+                       class="form-control"
+                       value="{{ old('kode_barang', $aset->kode_barang) }}">
 
+                @error('kode_barang')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
-<label>Nama Barang</label>
-<input type="text" name="nama_barang" value="{{ old('nama_barang', $aset->nama_barang) }}">
+            <div class="mb-3">
+                <label class="form-label">Nama Barang</label>
 
+                <input type="text"
+                       name="nama_barang"
+                       class="form-control"
+                       value="{{ old('nama_barang', $aset->nama_barang) }}">
 
-<label>Kategori</label>
-<select name="kategori_id" required>
+                @error('nama_barang')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
-<option value="">-- Pilih Kategori --</option>
+            <div class="mb-3">
+                <label class="form-label">Kategori</label>
 
-@foreach($kategoris as $kat)
-<option value="{{ $kat->id }}"
-    {{ old('kategori_id', $aset->kategori_id) == $kat->id ? 'selected' : '' }}>
-    {{ $kat->nama_kategori }}
-</option>
-@endforeach
+                <select name="kategori_id" class="form-select">
+                    <option value="">-- Pilih Kategori --</option>
 
-</select>
+                    @foreach($kategoris as $kat)
+                        <option value="{{ $kat->id }}"
+                            {{ old('kategori_id', $aset->kategori_id) == $kat->id ? 'selected' : '' }}>
 
+                            {{ $kat->nama_kategori }}
+                        </option>
+                    @endforeach
+                </select>
 
-<label>Jumlah</label>
-<input type="number" name="jumlah" value="{{ old('jumlah', $aset->jumlah) }}">
+                @error('kategori_id')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
+            <div class="mb-3">
+                <label class="form-label">Jumlah</label>
 
-<label>Kondisi</label>
-<select name="kondisi">
+                <input type="number"
+                       name="jumlah"
+                       class="form-control"
+                       value="{{ old('jumlah', $aset->jumlah) }}">
 
-<option value="Baik" {{ old('kondisi', $aset->kondisi)=='Baik'?'selected':'' }}>
-Baik
-</option>
+                @error('jumlah')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
-<option value="Rusak Ringan" {{ old('kondisi', $aset->kondisi)=='Rusak Ringan'?'selected':'' }}>
-Rusak Ringan
-</option>
+            <div class="mb-3">
+                <label class="form-label">Kondisi</label>
 
-<option value="Rusak Berat" {{ old('kondisi', $aset->kondisi)=='Rusak Berat'?'selected':'' }}>
-Rusak Berat
-</option>
+                <select name="kondisi" class="form-select">
+                    <option value="">-- Pilih Kondisi --</option>
 
-</select>
+                    <option value="Baik"
+                        {{ old('kondisi', $aset->kondisi) == 'Baik' ? 'selected' : '' }}>
+                        Baik
+                    </option>
 
+                    <option value="Rusak Ringan"
+                        {{ old('kondisi', $aset->kondisi) == 'Rusak Ringan' ? 'selected' : '' }}>
+                        Rusak Ringan
+                    </option>
 
-{{-- 🔥 FOTO --}}
-<label>Foto</label>
-<input type="file" name="foto">
+                    <option value="Rusak Berat"
+                        {{ old('kondisi', $aset->kondisi) == 'Rusak Berat' ? 'selected' : '' }}>
+                        Rusak Berat
+                    </option>
+                </select>
 
-<br><br>
+                @error('kondisi')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
-{{-- tampilkan foto lama --}}
-@if($aset->foto)
-    <img src="{{ asset('uploads/'.$aset->foto) }}" width="100">
-@endif
+            <div class="mb-3">
+                <label class="form-label">Foto Baru</label>
 
+                <input type="file"
+                       name="foto"
+                       class="form-control">
 
-<br><br>
+                @error('foto')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
-<button class="btn btn-edit">Update</button>
+            @if($aset->foto)
+                <div class="mb-3">
+                    <label class="form-label">Foto Saat Ini</label>
+                    <br>
 
-<a href="{{ route('asets.index') }}" class="btn btn-cancel">
-Batal
-</a>
+                    <img src="{{ asset('uploads/' . $aset->foto) }}"
+                         width="120"
+                         class="rounded border shadow-sm">
+                </div>
+            @endif
 
-</form>
+            <button class="btn btn-primary">
+                Update
+            </button>
+
+            <a href="{{ route('asets.index') }}"
+               class="btn btn-secondary">
+                Batal
+            </a>
+        </form>
+    </div>
+</div>
 
 @endsection
